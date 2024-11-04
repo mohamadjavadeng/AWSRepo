@@ -27,9 +27,12 @@ def publishData(txt):
         print(msg)
         client.publish("py/pub", payload=json.dumps({"msg": msg}), qos=0, retain=False)
         ctr = ctr + 1
+        if ctr == 12:
+            break
+        time.sleep(1)
 
-        time.sleep(5)
-        
+# Create a new thread to publish data
 _thread.start_new_thread(publishData,("Spin-up new Thread...",))
+
+# loop publishing data forever and you can not stop it, Just terminate the running
 client.loop_forever()
-print("end of publishing")
