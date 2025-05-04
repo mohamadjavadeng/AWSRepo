@@ -13,7 +13,7 @@ def on_connect(client, userdata, flags, rc):
 
 ### on Subscribe message
 def on_message(client, userdata, msg):
-    print(f"Message received on topic {msg.topic}")
+    # print(f"Message received on topic {msg.topic}")
     payload = json.loads(msg.payload.decode('utf-8'))
     print(f"Payload: {payload}")
 # Defining client
@@ -33,30 +33,17 @@ client.tls_insecure_set(True)
 client.connect("ak40v1wcytj5n-ats.iot.ap-southeast-2.amazonaws.com",8883,60)
 
 def publishData(txt):
-    print(txt)
-    ctr = 1
-    lamp1 = True
-    lamp2 = True
     while (True):
-        if lamp1 == True:
-            msg = "ON1"
-            lamp1 = False
-        else:
-            msg = "OFF1"
-            lamp1 = True
-        print(msg)
+        # if lamp1 == True:
+        #     msg = "ON1"
+        #     lamp1 = False
+        # else:
+        #     msg = "OFF1"
+        #     lamp1 = True
+        # print(msg)
+        msg = input()
         client.publish("py/pub", payload=msg, qos=0, retain=False)
-        time.sleep(2)
-        if lamp2 == True:
-            msg = "ON2"
-            lamp2 = False
-        else:
-            msg = "OFF2"
-            lamp2 = True
-        print(msg)
-        client.publish("py/pub", payload=msg, qos=0, retain=False)
-        ctr = ctr + 1
-        time.sleep(2)
+        time.sleep(2)   
 
 # Create a new thread to publish data
 _thread.start_new_thread(publishData,("Spin-up new Thread...",))
